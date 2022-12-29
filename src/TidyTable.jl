@@ -17,15 +17,16 @@ macro_symbols = :select, :filter, :mutate, :summarize, :group_by, :rename, :tran
 
 using DataFrames
 using RCall
-R"""
-list.of.packages <- c("tidytable")
-new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
-if(length(new.packages) > 0) install.packages(new.packages)
-
-library(tidytable)
-"""
 
 function tidytable(df::DataFrame)
+    R"""
+    list.of.packages <- c("tidytable")
+    new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+    if(length(new.packages) > 0) install.packages(new.packages)
+    
+    library(tidytable)
+    """
+    
     @rput df
     "df"
 end
