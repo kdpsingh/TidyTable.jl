@@ -28,12 +28,14 @@ df = DataFrame(a = repeat(1:2, inner = 5), b = 11:20)
 end
 ```
 
+```
 2×2 DataFrame
  Row │ a      b       
      │ Int64  Float64 
 ─────┼────────────────
    1 │     1     13.0
    2 │     2     18.0
+```
 
 ## Using TidyTable.jl
 
@@ -45,9 +47,11 @@ end
 end
 ```
 
+```
 2×2 DataFrame
  Row │ a      b       
      │ Int64  Float64 
 ─────┼────────────────
    1 │     1     13.0
    2 │     2     18.0
+```
