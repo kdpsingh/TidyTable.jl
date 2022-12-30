@@ -68,3 +68,23 @@ end
    5 │  2004  13.9057
    6 │  2005  16.4682
 ```
+
+## Which one is faster?
+
+Both were benchmarked with @time, with Julia running on 6 threads on a Windows virtual machine.
+
+### DataFrames.jl
+
+1st run: 5.966837 seconds (11.12 M allocations: 612.987 MiB, 3.36% gc time, 99.71% compilation time: 36% of which was recompilation)
+
+2nd run: 0.294697 seconds (691.36 k allocations: 36.597 MiB, 97.98% compilation time)
+
+3rd run: 0.289215 seconds (680.42 k allocations: 35.998 MiB, 97.94% compilation time)
+
+### TidyTable.jl
+
+1st run: 5.009644 seconds (3.07 M allocations: 161.663 MiB, 1.23% gc time, 30.50% compilation time: 32% of which was recompilation)
+
+2nd run: 0.050233 seconds (118.08 k allocations: 5.400 MiB)
+
+3rd run: 0.050572 seconds (118.08 k allocations: 5.400 MiB)
