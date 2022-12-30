@@ -2,7 +2,6 @@ module TidyTable
 
 using DataFrames: DataFrame
 using RCall
-using Random: randstring
 
 export tidytable, collect, @select, @filter, @slice, @mutate, @summarize, @summarise, @group_by, @rename, @transmute, @arrange, @pull
 
