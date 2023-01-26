@@ -17,17 +17,22 @@ using DataFrames
 using Chain
 using Statistics
 using RDatasets
+using BenchmarkTools
 
 movies = dataset("ggplot2", "movies")
 ```
 ## Using DataFrames.jl
 
 ```julia
-@chain movies begin
-  subset(:Year => (x -> x .>= 2000))
-  groupby(:Year)
-  combine(:Budget => (x -> mean(skipmissing(x))) => :Budget)
-  transform(:Budget => (x -> x/1e6) => :Budget)
+function f1(df)
+
+  @chain df begin
+    subset(:Year => (x -> x .>= 2000))
+    groupby(:Year)
+    combine(:Budget => (x -> mean(skipmissing(x))) => :Budget)
+    transform(:Budget => (x -> x/1e6) => :Budget)
+  end
+
 end
 ```
 
@@ -47,12 +52,16 @@ end
 ## Using TidyTable.jl
 
 ```julia
-@chain tidytable(movies) begin
-  @filter(Year >= 2000)
-  @group_by(Year)
-  @summarize(Budget = mean(Budget, na.rm = TRUE))
-  @mutate(Budget = Budget/1e6)
-  collect()
+function f2(df)
+
+  @chain tidytable(df) begin
+    @filter(Year >= 2000)
+    @group_by(Year)
+    @summarize(Budget = mean(Budget, na.rm = TRUE))
+    @mutate(Budget = Budget/1e6)
+    collect()
+  end
+
 end
 ```
 
@@ -75,16 +84,20 @@ Both were benchmarked with @time, with Julia running on 6 threads on a Windows v
 
 ### DataFrames.jl
 
-1st run: 5.966837 seconds (11.12 M allocations: 612.987 MiB, 3.36% gc time, 99.71% compilation time: 36% of which was recompilation)
+```julia
+@btime f1($movies) samples=1
+@btime f1($movies) samples=1
+```
 
-2nd run: 0.294697 seconds (691.36 k allocations: 36.597 MiB, 97.98% compilation time)
-
-3rd run: 0.289215 seconds (680.42 k allocations: 35.998 MiB, 97.94% compilation time)
+1st run: 3.589 ms (909 allocations: 1.78 MiB)
+2nd run: 2.771 ms (908 allocations: 1.78 MiB)
 
 ### TidyTable.jl
 
-1st run: 5.009644 seconds (3.07 M allocations: 161.663 MiB, 1.23% gc time, 30.50% compilation time: 32% of which was recompilation)
+```julia
+@btime f2($movies) samples=1
+@btime f2($movies) samples=1
+```
 
-2nd run: 0.050233 seconds (118.08 k allocations: 5.400 MiB)
-
-3rd run: 0.050572 seconds (118.08 k allocations: 5.400 MiB)
+1st run: 30.272 ms (118014 allocations: 5.40 MiB)
+2nd run: 33.410 ms (118014 allocations: 5.40 MiB)

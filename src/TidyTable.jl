@@ -3,9 +3,9 @@ module TidyTable
 using DataFrames: DataFrame
 using RCall
 
-export tidytable, collect, @select, @filter, @slice, @mutate, @summarize, @summarise, @group_by, @rename, @transmute, @arrange, @pull
+export tidytable, collect, @select, @filter, @slice, @mutate, @summarize, @summarise, @group_by, @ungroup, @rename, @transmute, @arrange, @pull, @count, @rowwise, @pivot_longer, @pivot_wider, @replace_na, @separate, @separate_rows, @unite, @nest, @nest_by, @unnest, @unnest_longer, @unnest_wider
 
-macro_symbols = :select, :filter, :slice, :mutate, :summarize, :summarise, :group_by, :rename, :transmute, :arrange, :pull
+macro_symbols = :select, :filter, :slice, :mutate, :summarize, :summarise, :group_by, :ungroup, :rename, :transmute, :arrange, :pull, :count, :rowwise, :pivot_longer, :pivot_wider, :replace_na, :separate, :separate_rows, :unite, :nest, :nest_by, :unnest, :unnest_longer, :unnest_wider
 
 
 for f in macro_symbols
@@ -19,15 +19,17 @@ for f in macro_symbols
     end    
 end
 
-function tidytable(df::DataFrame)
-    R"""
-    list.of.packages <- c("tidytable")
-    new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
-    if(length(new.packages) > 0) install.packages(new.packages)
-    
-    library(tidytable)
-    """
+function __init__()
+  R"""
+  list.of.packages <- c("tidytable")
+  new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+  if(length(new.packages) > 0) install.packages(new.packages)
+  
+  library(tidytable)
+  """
+end
 
+function tidytable(df::DataFrame)
     df, "df"
 end
 
