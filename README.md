@@ -89,8 +89,8 @@ Both were benchmarked with @time, with Julia running on 6 threads on a Windows v
 @btime f1($movies) samples=1
 ```
 
-1st run: 3.589 ms (909 allocations: 1.78 MiB)
-2nd run: 2.771 ms (908 allocations: 1.78 MiB)
+- 1st run: `3.589 ms (909 allocations: 1.78 MiB)`
+- 2nd run: `2.771 ms (908 allocations: 1.78 MiB)`
 
 ### TidyTable.jl
 
@@ -99,5 +99,5 @@ Both were benchmarked with @time, with Julia running on 6 threads on a Windows v
 @btime f2($movies) samples=1
 ```
 
-1st run: 30.272 ms (118014 allocations: 5.40 MiB)
-2nd run: 33.410 ms (118014 allocations: 5.40 MiB)
+- 1st run: `30.272 ms (118014 allocations: 5.40 MiB)`
+- 2nd run: `33.410 ms (118014 allocations: 5.40 MiB)`
