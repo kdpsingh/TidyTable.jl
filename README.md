@@ -101,3 +101,22 @@ Both were benchmarked with @time, with Julia running on 6 threads on a Windows v
 
 - 1st run: `30.272 ms (118014 allocations: 5.40 MiB)`
 - 2nd run: `33.410 ms (118014 allocations: 5.40 MiB)`
+
+### tidytable in R
+
+```r
+library(tidytable)
+library(ggplot2movies)
+data(movies)
+
+bench::mark({
+  movies %>% 
+  filter(year >= 2000) %>% 
+  group_by(year) %>% 
+  summarize(budget = mean(budget, na.rm = TRUE)) %>% 
+  mutate(budget = budget/1e6)
+  }, iterations = 1)
+```
+
+- Time elapsed: `14.4 ms`
+- Memory allocated: `2.5MB`
